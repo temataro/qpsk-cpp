@@ -1,3 +1,11 @@
+/*
+ * main.cpp - temporary playground until things get complicated and we move to src/
+ * https://github.com/temataro/qpsk-cpp
+ * Author: temataro 2024-11-01
+ * 
+ * Copyright 2024. SPDX-License-Identifier: AGPL-3.0-or-later
+ */
+
 #include <cmath>
 #include <complex>
 #include <cstdio>

@@ -36,7 +36,10 @@ This project will be broken down into the five following main sections:
 3) Generation of IQ signals from constellation
 4) Applying Tx intersymbol interference deterrents and channel effects
 5) Writing/appending to a file buffer.
-
+6) What does the data layer you transmit actually look like?
+  Look into forward error correction; packets and what not.
+7) OFDM with pilot symbols and the whole shebang.
+ 
 The goal is to follow a tracer bullet approach and implement a bare bones version of each step before
 moving on to making it prettier.
 
@@ -51,4 +54,8 @@ moving on to making it prettier.
 
     [ . ] Stage 4
 
-    [  50% ] Stage 5
+    [50%] Stage 5
+    
+    [ . ] Stage 6
+
+    [ . ] Stage 7

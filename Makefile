@@ -1,6 +1,6 @@
 # Compiler + flags
-CXX 		  = g++
-CXX_FLAGS = -std=c++11 -Wall -Iinclude
+CXX 		  = clang++
+CXX_FLAGS = -std=c++20 -Wall -Iinclude
 
 # Dirs
 SRC_DIR     = src
@@ -12,10 +12,11 @@ TESTS_DIR   = tests
 EXECUTABLE  = $(BIN_DIR)/qpsk_encoder
 
 # Use object files to make program
-./%: ./%.cpp
-	mkdir -p $(BIN_DIR)
-	$(CXX) $(CXX_FLAGS) -o $(BIN_DIR)/$@ $^ && \
-	./$(BIN_DIR)/$@
+%: %.cpp
+	# mkdir -p $(BIN_DIR)
+	@echo "HERE"
+	$(CXX) $(CXX_FLAGS) -o $@ $^ && ./$@
+	# ./$(BIN_DIR)/$@
 
 # Make object files
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(INCLUDE_DIR)/%.h

@@ -48,7 +48,7 @@ moving on to making it prettier.
 
     [ . ] Stage 1
 
-    [ . ] Stage 2
+    [100%] Stage 2
 
     [ . ] Stage 3
 

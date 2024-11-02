@@ -15,7 +15,7 @@ EXECUTABLE  = $(BIN_DIR)/qpsk_encoder
 %: %.cpp
 	# mkdir -p $(BIN_DIR)
 	@echo "HERE"
-	$(CXX) $(CXX_FLAGS) -o $@ $^ && ./$@
+	$(CXX) $(CXX_FLAGS) -o $@ $^
 	# ./$(BIN_DIR)/$@
 
 # Make object files

@@ -42,8 +42,13 @@ moving on to making it prettier.
 
 ### Current progress
   **{ [ . ] = WIP; [x] = DONE}**
+
     [ . ] Stage 1
+
     [ . ] Stage 2
+
     [ . ] Stage 3
+
     [ . ] Stage 4
-    [ . ] Stage 5
+
+    [  50% ] Stage 5

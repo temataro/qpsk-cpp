@@ -73,6 +73,10 @@ int main(void) {
 
   mapSymToIQ(symbolMap, symbols);
 
+  // Now that we have our symbol to IQ vector mapping, we can start taking inputs from
+  // stdin and processing those as our data bits to build symbols and append the data to
+  // a file.
+
   return 0;
 }
 

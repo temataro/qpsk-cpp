@@ -29,33 +29,35 @@ According to jippity 4.0, this would be the best way to structure this project:
   └── Makefile                     // Makefile to build the project
 ```
 
---- 
+---
 This project will be broken down into the five following main sections:
 1) Handling bitstream inputs ccc
+    - Along with a feature to literally just transmit a full file by rate
+      limiting a `cat <filename>` with our emitter program.
 2) Symbol to IQ contstellation mapping
 3) Generation of IQ signals from constellation
 4) Applying Tx intersymbol interference deterrents and channel effects
 5) Writing/appending to a file buffer.
 6) What does the data layer you transmit actually look like?
-  Look into forward error correction; packets and what not.
+  Look into forward error correction; packets and what not; channel coding!
 7) OFDM with pilot symbols and the whole shebang.
- 
+
 The goal is to follow a tracer bullet approach and implement a bare bones version of each step before
 moving on to making it prettier.
 
 ### Current progress
   **{ [ . ] = WIP; [x] = DONE}**
 
-    [ . ] Stage 1
+    [49%] Stage 1
 
     [100%] Stage 2
 
-    [ . ] Stage 3
+    [100%] Stage 3
 
     [ . ] Stage 4
 
-    [50%] Stage 5
-    
+    [100%] Stage 5
+
     [ . ] Stage 6
 
     [ . ] Stage 7

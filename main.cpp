@@ -23,18 +23,19 @@
 
 // clang-format off
 namespace config{
-constexpr int          M                  =                                                2;
-constexpr size_t       numSymbols         =                              0x0001 << config::M;
-constexpr float        fc                 =                                          2440.0f; // Carrier frequency
-constexpr unsigned int SAMP_RATE          =                                        1'000'000;
-constexpr unsigned int BAUD_RATE          =                                              940;
-constexpr float        dt                 =                      (float) 1/config::SAMP_RATE;
-constexpr unsigned int BIT_RATE           =                            M * config::BAUD_RATE;
-// constexpr unsigned int samplesPerSymbol=                                              SPS;
+constexpr size_t       M                  =                                2;
+constexpr size_t       numTxSym           =                              300;
+constexpr size_t       numSymbols         =              0x0001 << config::M;
+constexpr float        fc                 =                          2440.0f; // Carrier frequency
+constexpr unsigned int SAMP_RATE          =                        1'000'000;
+constexpr unsigned int BAUD_RATE          =                              940;
+constexpr float        dt                 =      (float) 1/config::SAMP_RATE;
+constexpr unsigned int BIT_RATE           =            M * config::BAUD_RATE;
+// constexpr unsigned int samplesPerSymbol=                              SPS;
 
 // compile time functions
-constexpr float        RAD2DEG(float radians)                         { return (float) radians * 180 / PI; }
-constexpr float        DEG2RAD(float degrees)                         { return (float) degrees * PI / 180; }
+constexpr float        RAD2DEG(float radians)         { return (float) radians * 180 / PI; }
+constexpr float        DEG2RAD(float degrees)         { return (float) degrees * PI / 180; }
 constexpr size_t       fVEC_SIZE(std::vector<std::complex<float>> vec){ return (size_t) 2 * vec.size() * sizeof(float); }
 }
 // clang-format on
@@ -53,6 +54,7 @@ int main(void) {
   float d_angleStep = (float)360 / (config::numSymbols);
   float d_initAngle = 45;
 
+  // Just put all the constellation in one cirle for now...
   for (int e = 0; e < symbols.size();
        e++) { // .size() returns number of elements; .capacity() allocated size.
     symbols[e] =
@@ -73,19 +75,29 @@ int main(void) {
 
   mapSymToIQ(symbolMap, symbols);
 
-  // Now that we have our symbol to IQ vector mapping, we can start taking inputs from
-  // stdin and processing those as our data bits to build symbols and append the data to
-  // a file.
-
   // Main loop
-  char byteInput;
-  while (std::cin.get(byteInput)){
-    // Arbitrarily decided to use the LSB as the bit we use
-    //            0'b00001111
-    bool dataBit = byteInput & 0x01;
+  char byteInput = 97;
+  size_t bitsAccum = 0;
+  size_t rxBit, idx = 0x00; // For now let's just say the bit value of the
+  // symbol is its index in the symbols vector. Keep this an explicit decision
+  // with idx.
+  std::vector<std::complex<float>> iqSym(SPS);
 
-    std::string msg = dataBit ? "ONE \n" : "ZERO \n";
-    printf("%s", msg.c_str());
+  while (std::cin.get(byteInput)) {
+    bool dataBit = byteInput & 0x01;
+    // Accumulate bits until you get to the size you want,
+    // then get the index of the sym and proceed with the processing...
+    rxBit = ((rxBit << 1) ^ dataBit) & ((0x1 << config::M) - 1);
+    bitsAccum++;
+    if (bitsAccum == config::M) {
+      idx = rxBit;
+      std::cout << "Read a bit! It's " << idx << std::endl;
+      iqSym = symbolMap[idx];
+      bitsAccum = 0;
+      rxBit = 0;
+      idx = 0;
+      writeIQToFile("./data/qpsk.iq", iqSym);
+    }
   }
 
   return 0;
@@ -95,7 +107,7 @@ int writeIQToFile(const std::string &filename,
                   const std::vector<std::complex<float>> &iq_data) {
   FILE *fd;
 
-  fd = fopen(filename.c_str(), "wb");
+  fd = fopen(filename.c_str(), "a+b"); // We want to accumulate a large binary
   if (!fd) {
     fprintf(stderr, "%s could not be opened!", filename.c_str());
     return 1;
@@ -119,7 +131,7 @@ int writeIQToFile(const std::string &filename,
             filename.c_str(), written_bytes, config::fVEC_SIZE(iq_data));
     return 1;
   }
-  printf("%d bytes written.\n", (int) config::fVEC_SIZE(iq_data));
+  printf("%d bytes written.\n", (int)config::fVEC_SIZE(iq_data));
 
   fclose(fd);
 

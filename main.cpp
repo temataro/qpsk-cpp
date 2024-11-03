@@ -77,6 +77,17 @@ int main(void) {
   // stdin and processing those as our data bits to build symbols and append the data to
   // a file.
 
+  // Main loop
+  char byteInput;
+  while (std::cin.get(byteInput)){
+    // Arbitrarily decided to use the LSB as the bit we use
+    //            0'b00001111
+    bool dataBit = byteInput & 0x01;
+
+    std::string msg = dataBit ? "ONE \n" : "ZERO \n";
+    printf("%s", msg.c_str());
+  }
+
   return 0;
 }
 

@@ -116,10 +116,20 @@ What does it **look** like:
 #| label:       time domain IQ plot
 #| fig-cap:     time domain IQ plot
 fig = plt.figure(figsize=(12, 6))
-plt.plot(data[data.size // 100: data.size // 100 + 4000].real, "-")
-plt.plot(data[data.size // 100: data.size // 100 + 4000].imag, ".-")
+d_section = data[data.size // 100: data.size // 100 + 4000]
+plt.plot(d_section.real, "-")
+plt.plot(d_section.imag, ".-")
 plt.xlabel("time")
 plt.ylabel("amplitude")
 plt.title("Time domain of IQ plot")
 plt.grid(True)
+
+print(f"Checking frontend conditioning: {np.mean(data.real)=}")
+print(f"Checking frontend conditioning: {np.mean(data.imag)=}")
+```
+
+# Coarse CFO estimation
+```{python}
+plt.scatter(d_section.real, d_section.imag); plt.show()
+
 ```
